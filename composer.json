@@ -30,7 +30,7 @@
 		"typo3/cms-reactions": "^12.4 || ^13.4",
 		"typo3/cms-install": "^12.4 || ^13.4",
 		"typo3/coding-standards": "*",
-		"cobweb/svconnector": "^6.0"
+		"cobweb/svconnector": "^6.0 || ^7.0"
 	},
 	"require-dev": {
 		"cobweb/externalimport_test": "^0.15.0",

@@ -20,7 +20,6 @@ namespace Cobweb\ExternalImport\ViewHelpers\Be;
 use Cobweb\ExternalImport\Domain\Repository\TcaRepositoryInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -38,21 +37,13 @@ class TableTitleViewHelper extends AbstractViewHelper
 
     /**
      * Prints out the name of the given table.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
+    public function render(): string
+    {
         $tcaTitle = 'Unknown';
         $tcaRepository = GeneralUtility::makeInstance(TcaRepositoryInterface::class);
         try {
-            $tcaTitle = $tcaRepository->getTca()[$arguments['table']]['ctrl']['title'] ?? $tcaTitle;
+            $tcaTitle = $tcaRepository->getTca()[$this->arguments['table']]['ctrl']['title'] ?? $tcaTitle;
             $title = LocalizationUtility::translate(
                 $tcaTitle,
                 ''

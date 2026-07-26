@@ -20,7 +20,6 @@ namespace Cobweb\ExternalImport\ViewHelpers;
 use Cobweb\ExternalImport\Domain\Model\Configuration;
 use Cobweb\ExternalImport\Validator\GeneralConfigurationValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -51,27 +50,18 @@ class ValidateGeneralConfigurationViewHelper extends AbstractViewHelper
 
     /**
      * Runs the validation and loads the results.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
+    public function render(): string
+    {
         $configurationValidator = GeneralUtility::makeInstance(GeneralConfigurationValidator::class);
-        $configurationValidator->isValid($arguments['configuration']);
-        $templateVariableContainer = $renderingContext->getVariableProvider();
+        $configurationValidator->isValid($this->arguments['configuration']);
+        $templateVariableContainer = $this->renderingContext->getVariableProvider();
         $templateVariableContainer->add(
-            $arguments['as'],
+            $this->arguments['as'],
             $configurationValidator->getResults()->getAll()
         );
-        $output = $renderChildrenClosure();
-        $templateVariableContainer->remove($arguments['as']);
+        $output = $this->renderChildren();
+        $templateVariableContainer->remove($this->arguments['as']);
         return $output;
     }
 }

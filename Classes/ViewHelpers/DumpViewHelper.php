@@ -18,7 +18,6 @@ namespace Cobweb\ExternalImport\ViewHelpers;
  */
 
 use Cobweb\ExternalImport\Utility\DebugUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -43,17 +42,9 @@ class DumpViewHelper extends AbstractViewHelper
 
     /**
      * Dumps the array.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
-        return DebugUtility::dumpArray($arguments['array']);
+    public function render(): string
+    {
+        return DebugUtility::dumpArray($this->arguments['array']);
     }
 }

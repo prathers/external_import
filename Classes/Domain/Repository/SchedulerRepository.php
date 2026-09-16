@@ -155,7 +155,7 @@ class SchedulerRepository implements SingletonInterface
             ->getQueryBuilderForTable('tx_scheduler_task');
 
         $queryBuilder
-            ->select('serialized_task_object')
+            ->select('*')
             ->from('tx_scheduler_task')
             ->where(
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
@@ -164,14 +164,13 @@ class SchedulerRepository implements SingletonInterface
         $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             try {
-                $task = $this->taskSerializer->deserialize($row['serialized_task_object']);
+                $task = $this->taskSerializer->deserialize($row);
             } catch (InvalidTaskException) {
                 continue;
             }
 
             // Add the task to the list only if it is valid
             if (get_class($task) === self::$taskClassName && (new TaskValidator())->isValid($task)) {
-                $task->setScheduler();
                 $this->tasks[] = $task;
             }
         }
